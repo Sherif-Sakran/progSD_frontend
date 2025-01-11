@@ -5,6 +5,7 @@ import StationDropdown from "./StationDropdown";
 import VehicleFilter from "./VehicleTypeDropdown";
 import VehicleTable from "./VehicleTable"
 import StationsMap from "./StationsMap"
+import RentalModal from "./RentalModal"
 
 function CustomerDashboard() {
   const [userDetails, setUserDetails] = useState(null);
@@ -12,6 +13,7 @@ function CustomerDashboard() {
   const [stations, setStations] = useState(null);
   const [selectedStation, setSelectedStation] = useState(null);
   const [vehicleType, setVehicleType] = useState("All");
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
 
   // const handleListVehicles = async () => {
   //   console.log("List vehicles");
@@ -110,7 +112,8 @@ function CustomerDashboard() {
           {/* I may pass the vehicles to the Map to implement more functionalities later on */}
           <StationsMap stations={stations} />
 
-          <VehicleTable vehicles={filteredVehicles} handleRent={handleRent} />
+          <VehicleTable vehicles={filteredVehicles} setSelectedVehicle={setSelectedVehicle} />
+          <RentalModal selectedVehicle={selectedVehicle} setSelectedVehicle={setSelectedVehicle} />
         </>
       ) : (
         <p>...</p>

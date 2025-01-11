@@ -1,4 +1,4 @@
-const VehicleTable = ({ vehicles, handleRent }) => {
+const VehicleTable = ({ vehicles, setSelectedVehicle }) => {
  
     return (
       <table>
@@ -19,7 +19,7 @@ const VehicleTable = ({ vehicles, handleRent }) => {
               <td>{vehicle.battery_level}%</td>
               <td>{vehicle.status}</td>
               <td>
-                <button onClick={() => handleRent(vehicle.id)}>Rent</button>
+                <button onClick={() => setSelectedVehicle(vehicle)}>Rent</button>
               </td>
             </tr>
           ))}
