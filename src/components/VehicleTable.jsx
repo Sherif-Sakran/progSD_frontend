@@ -3,13 +3,13 @@ const VehicleTable = ({ vehicles, handleRent }) => {
     return (
       <table>
         <thead>
-          <tr>
+          { vehicles && <tr>
             <th>ID</th>
             <th>Type</th>
             <th>Battery Level</th>
             <th>Status</th>
             <th>Action</th>
-          </tr>
+          </tr> }
         </thead>
         <tbody>
           {vehicles?.map((vehicle) => (
