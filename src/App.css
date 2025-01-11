@@ -5,3 +5,99 @@
   text-align: center;
 }
 
+/* Modal overlay */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Dark background overlay */
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 350px;  /* Slightly larger width for better spacing */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center; /* Center the text and buttons */
+  position: relative;
+}
+
+/* Close button (X) */
+.modal-content button.close-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  color: #333;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.modal-content button.close-btn:hover {
+  color: #ff5c5c; /* Change color on hover */
+}
+
+/* Modal header */
+.modal-content h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/* Modal paragraph */
+.modal-content p {
+  font-size: 14px;
+  margin: 10px 0;
+  color: #555; /* Lighter color for text */
+}
+
+/* Action buttons (Confirm and Cancel) */
+.modal-content button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-top: 10px;
+  width: 100%; /* Make buttons full-width */
+  cursor: pointer;
+}
+
+.modal-content .btn-confirm {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+}
+
+.modal-content .btn-confirm:hover {
+  background-color: #45a049; /* Darken on hover */
+}
+
+.modal-content .btn-cancel {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  margin-top: 5px;
+}
+
+.modal-content .btn-cancel:hover {
+  background-color: #e53935; /* Darken on hover */
+}
+
+/* Fade-in animation for the modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
