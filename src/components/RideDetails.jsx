@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/api"; // Axios instance
+import StationDropdown from "./StationDropdown";
+import { useNavigate } from "react-router-dom";
 
-const RideDetails = ({ vehicleRental, setVehicleRental }) => {
+const RideDetails = () => {
   const [rentals, setRentals] = useState(null);
   const [loading, setLoading] = useState(true);
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const [destinationStations, setDestinationStations] = useState(null);
+  const [selectedDestinationStation, setSelectedDestinationStation] = useState(null);
 
+  const navigate = useNavigate();
 
   useEffect(()=> {
     const getRentals = async () =>{
@@ -17,7 +22,33 @@ const RideDetails = ({ vehicleRental, setVehicleRental }) => {
     getRentals();
     setLoading(false);
     console.log("rentals: ", rentals)
-  }, [])
+  }, []);
+
+
+    // Fetch stations on load
+    useEffect(() => {
+    const fetchDestinationStations = async () => {
+        try {
+        const response = await api.get("vehicles/list_locations/");
+        setDestinationStations(response.data);
+        console.log(response.data);
+        } catch (error) {
+        console.error("Failed to fetch stations", error);
+        }
+    };
+
+    fetchDestinationStations();
+    }, []);
+
+
+    // Use useEffect to trigger when selectedDestinationStation changes
+    useEffect(() => {
+        if (selectedDestinationStation) {
+        console.log("Selected Destination Station updated:", selectedDestinationStation);
+        }
+    }, [selectedDestinationStation]); // This runs when selectedDestinationStation changes
+    
+
   const handleUpdateLocation = async (vehicleID) => {
     const requestBody = {
         "vehicle_id": vehicleID,
@@ -33,35 +64,62 @@ const RideDetails = ({ vehicleRental, setVehicleRental }) => {
     }
   };
 
-//   const handleEndRide = async () => {
-//     try {
-//       const response = await api.post(`/vehicles/${vehicle.id}/return_vehicle/`, {
-//         destination_station: destinationStation,
-//       });
-//       onEndRide(response.data); // Notify parent about ride completion
-//     } catch (error) {
-//       console.error("Error ending ride:", error);
-//     }
-//   };
+  const handleEndRide = async (vehicle_id) => {
+    if(!selectedDestinationStation){
+        alert('Select a destination location');
+        return;
+    }
+    const requestBody = {
+        "vehicle_id": vehicle_id,
+        "end_location_id": selectedDestinationStation
+    }
+    console.log("request body: ", requestBody);
+    try {
+      setLoading(true);
+      const response = await api.post('vehicles/return_vehicle/', requestBody);
+      console.log(response.data);
+      navigate('/home');
+      //   onEndRide(response.data); // Notify parent about ride completion
+    } catch (error) {
+        console.error("Error ending ride:", error);
+    }finally{
+    setLoading(false);
+    }
+  };
 
-//   const handleReportDefect = async () => {
-//     try {
-//       await api.post(`/vehicles/${vehicle.id}/report_defect/`);
-//       alert("Vehicle reported as defective.");
-//     } catch (error) {
-//       console.error("Error reporting defect:", error);
-//     }
-//   };
-  const currentRentals = rentals?.filter(rental => rental.is_active===true);
+  const handleReportDefect = async (vehicle_id) => {
+    const responseBody = {
+        "vehicle_id": vehicle_id,
+        "description": "The car produces so much noise"
+    }
+    try {
+      const response = await api.post('vehicles/report_defective_vehicle/', responseBody);
+      console.log(response.data);
+      alert("Vehicle reported as defective.");
+    } catch (error) {
+      console.error("Error reporting defect:", error);
+    }
+  };
+  const currentRentals = (rentals || []).filter(rental => rental.is_active===true).sort((a, b) => new Date(b.start_time) - new Date(a.start_time));;
   console.log("current rentals: ", currentRentals)
-  const prevRentals = rentals?.filter(rental => rental.is_active===false);
-  console.log(currentRentals);
+  const prevRentals = (rentals || []).filter(rental => rental.is_active===false).sort((a, b) => new Date(b.start_time) - new Date(a.start_time));;
+  
+  if (loading)
+    return <p>loading</p>
+  
   return (
-    loading? <p>Loading</p>:
-  <>
-    {currentRentals && 
+      <>
+    { currentRentals.length === 0? <h2>No current rentals</h2>:
     <div>
-        <h2>Current Rental: {currentRentals[0].vehicle_id}</h2>
+        <h2>Current Rental</h2>
+        <p>
+            <strong>Vehicle ID:</strong> {currentRentals[0].vehicle_id}
+            <br />
+            <strong>Start Location:</strong> {currentRentals[0].start_location}
+            <br />
+            <strong>Start Time:</strong> {new Date(currentRentals[0].start_time).toLocaleString()}
+            <br />
+        </p>
         <div>
         <label htmlFor="latitude">Update Current Latitude:</label>
         <input
@@ -80,25 +138,17 @@ const RideDetails = ({ vehicleRental, setVehicleRental }) => {
         <button onClick={()=>handleUpdateLocation(currentRentals[0].vehicle_id)}>Update Location</button>
       </div>
 
-    {/*
       <div>
         <label htmlFor="destination">Select Destination Station:</label>
-        <select
-          id="destination"
-          value={destinationStation}
-          onChange={(e) => setDestinationStation(e.target.value)}
-        >
-          <option value="">Select a station</option>
-          {stations.map((station) => (
-            <option key={station.id} value={station.id}>
-              {station.name}
-            </option>
-          ))}
-        </select>
+        <StationDropdown
+          stations={destinationStations}
+          selectedStation={selectedDestinationStation}
+          setSelectedStation={setSelectedDestinationStation}
+          />
       </div>
-
-      <button onClick={handleEndRide}>End Ride</button>
-      <button onClick={handleReportDefect}>Report Defect</button> */}
+    
+      <button onClick={()=>handleEndRide(currentRentals[0].vehicle_id)}>End Ride</button>
+      <button onClick={()=>handleReportDefect(currentRentals[0].vehicle_id)}>Report Defect</button>
 
 
     </div>}
@@ -119,7 +169,7 @@ const RideDetails = ({ vehicleRental, setVehicleRental }) => {
             <br />
             <strong>End Location:</strong> {rental.end_location}
             <br />
-            <strong>Total Cost So Far:</strong> ${rental.total_cost}
+            <strong>Total Cost:</strong> ${rental.total_cost}
          </p>)}
 
     </div>

@@ -10,7 +10,7 @@ function Navbar() {
       <ul>
         <li><Link to="/login">Login</Link></li>
         {user && user.role === "customer" && (
-          <li><Link to="/customer">Customer Dashboard</Link></li>
+          <li><Link to="/home">Customer Dashboard</Link></li>
         )}
         {user && user.role === "operator" && (
           <li><Link to="/operator">Operator Dashboard</Link></li>
