@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import ProtectedRoute from './utils/ProtectedRoute'
 import NotAuthorised from "./components/NotAuthorised";
 import Navbar from "./components/Navbar";
+import Rentals from "./components/Rentals";
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
           }
         />
         <Route path="/home" element={<CustomerDashboard />} />
+        <Route path="/rentals" element={<Rentals />} />
 
         <Route path="/operator" element={
           <ProtectedRoute role="operator">

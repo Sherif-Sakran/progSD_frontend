@@ -6,6 +6,8 @@ import VehicleFilter from "./VehicleTypeDropdown";
 import VehicleTable from "./VehicleTable"
 import StationsMap from "./StationsMap"
 import RentalModal from "./RentalModal"
+import RideDetails from "./RideDetails"
+import {useNavigate} from "react-router-dom";
 
 function CustomerDashboard() {
   const [userDetails, setUserDetails] = useState(null);
@@ -14,6 +16,10 @@ function CustomerDashboard() {
   const [selectedStation, setSelectedStation] = useState(null);
   const [vehicleType, setVehicleType] = useState("All");
   const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [vehicleRental, setVehicleRental] = useState(null);
+
+
+  const navigate = useNavigate();
 
   // const handleListVehicles = async () => {
   //   console.log("List vehicles");
@@ -28,7 +34,7 @@ function CustomerDashboard() {
 
 
   useEffect(()=> {
-    console.log("type changed to: ", vehicleType)
+    console.log("type changed to: ", vehicleType);
   }, [vehicleType])
 
 
@@ -90,6 +96,8 @@ function CustomerDashboard() {
       "id": vehicleId
     });
     console.log(response.data);
+    setVehicleRental(response.data);
+    navigate("/rentals")
   };
   
 
@@ -114,6 +122,7 @@ function CustomerDashboard() {
 
           <VehicleTable vehicles={filteredVehicles} setSelectedVehicle={setSelectedVehicle} />
           <RentalModal selectedVehicle={selectedVehicle} setSelectedVehicle={setSelectedVehicle} handleRentalConfirmation={handleRentalConfirmation} />
+          <RideDetails vehicleRental={vehicleRental} setVehicleRental={setVehicleRental} />
         </>
       ) : (
         <p>...</p>
