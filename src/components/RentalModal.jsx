@@ -1,9 +1,6 @@
 import React from 'react'
 
-const RentalModal = ({selectedVehicle, setSelectedVehicle}) => {
-  const handleConfirmRent = () => {
-    console.log("confirming the rental");
-  }
+const RentalModal = ({selectedVehicle, setSelectedVehicle, handleRentalConfirmation}) => {
   const handleCloseModal = () => {
     console.log("closing ther modal");
     setSelectedVehicle(null);
@@ -22,7 +19,7 @@ const RentalModal = ({selectedVehicle, setSelectedVehicle}) => {
                 <br />
                 <strong>Type:</strong> {selectedVehicle.type}
             </p>
-            <button onClick={handleConfirmRent} className="btn-confirm">Confirm</button>
+            <button onClick={() => handleRentalConfirmation(selectedVehicle.id)} className="btn-confirm">Confirm</button>
             <button onClick={handleCloseModal} className="btn-cancel">Cancel</button>
             </div>
         </div>

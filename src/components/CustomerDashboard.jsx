@@ -84,7 +84,7 @@ function CustomerDashboard() {
   }, []);
 
 
-  const handleRent = async (vehicleId) => {
+  const handleRentalConfirmation = async (vehicleId) => {
     console.log(`Renting vehicle with ID: ${vehicleId}`);
     const response = await api.post("vehicles/rent_vehicle/", {
       "id": vehicleId
@@ -113,7 +113,7 @@ function CustomerDashboard() {
           <StationsMap stations={stations} />
 
           <VehicleTable vehicles={filteredVehicles} setSelectedVehicle={setSelectedVehicle} />
-          <RentalModal selectedVehicle={selectedVehicle} setSelectedVehicle={setSelectedVehicle} />
+          <RentalModal selectedVehicle={selectedVehicle} setSelectedVehicle={setSelectedVehicle} handleRentalConfirmation={handleRentalConfirmation} />
         </>
       ) : (
         <p>...</p>
