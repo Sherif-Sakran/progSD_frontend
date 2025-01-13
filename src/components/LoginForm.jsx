@@ -40,7 +40,9 @@ function LoginForm() {
     //   const data = await login(username, password);
       setMessage(`Welcome, ${data.username}!`);
       console.log(data);
-      navigate("/Dashboard");
+      data.role === "customer" && navigate("/home");
+      data.role === "operator" && navigate("/operator");
+      data.role === "manager" && navigate("/manager");
     } catch (error) {
         if (error.response && error.response.data)
             setMessage(error.response.data.message || "Login failed. Please check your credentials.");

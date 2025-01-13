@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import LogoutButton from "./LogoutButton";
 
 function Navbar() {
   const { user } = useContext(AuthContext);
@@ -8,9 +9,14 @@ function Navbar() {
   return (
     <nav>
       <ul>
-        <li><Link to="/login">Login</Link></li>
+        {user && (
+            <LogoutButton/>
+        )}
         {user && user.role === "customer" && (
-          <li><Link to="/home">Customer Dashboard</Link></li>
+            <li><Link to="/home">Home</Link></li>
+        )}
+        {user && user.role === "customer" && (
+            <li><Link to="/rentals">Rentals</Link></li>
         )}
         {user && user.role === "operator" && (
           <li><Link to="/operator">Operator Dashboard</Link></li>

@@ -18,7 +18,7 @@ function CustomerDashboard() {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [vehicleRental, setVehicleRental] = useState(null);
 
-
+  console.log('Rendering the customerDashboard component')
   const navigate = useNavigate();
 
   // const handleListVehicles = async () => {
@@ -82,6 +82,8 @@ function CustomerDashboard() {
       try {
         const response = await api.get("users/user_data/");
         setUserDetails(response.data);
+        console.log('customer data: ', response.data)
+        console.log('customer details: ', userDetails)
       } catch (error) {
         console.error("Failed to fetch user data", error);
       }
