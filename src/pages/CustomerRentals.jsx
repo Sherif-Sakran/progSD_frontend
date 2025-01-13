@@ -111,9 +111,9 @@ const RideDetails = () => {
   
   return (
       <>
-    { currentRentals.length === 0? <h2>No current rentals</h2>:
+    <h2>Current Rental</h2>
+    { currentRentals.length === 0? <p>None</p>:
     <div>
-        <h2>Current Rental</h2>
         <p>
             <strong>Vehicle ID:</strong> {currentRentals[0].vehicle_id}
             <br />
