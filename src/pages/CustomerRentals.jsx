@@ -10,6 +10,8 @@ const RideDetails = () => {
   const [longitude, setLongitude] = useState("");
   const [destinationStations, setDestinationStations] = useState(null);
   const [selectedDestinationStation, setSelectedDestinationStation] = useState(null);
+  const [startPayment, setStartPayment] = useState(false);
+  
 
   const navigate = useNavigate();
 

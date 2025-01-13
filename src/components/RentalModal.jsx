@@ -1,10 +1,21 @@
 import React from 'react'
 
-const RentalModal = ({selectedVehicle, setSelectedVehicle, handleRentalConfirmation}) => {
+const RentalModal = ({selectedVehicle, setSelectedVehicle}) => {
   const handleCloseModal = () => {
     console.log("closing ther modal");
     setSelectedVehicle(null);
   }
+  
+  const handleRentalConfirmation = async (vehicleId) => {
+    console.log(`Renting vehicle with ID: ${vehicleId}`);
+    const response = await api.post("vehicles/rent_vehicle/", {
+      "id": vehicleId
+    });
+    console.log(response.data);
+    setVehicleRental(response.data);
+    navigate("/rentals")
+  };
+  
 
   return (
     <>

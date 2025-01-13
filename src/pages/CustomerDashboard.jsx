@@ -16,7 +16,6 @@ function CustomerDashboard() {
   const [selectedStation, setSelectedStation] = useState(null);
   const [vehicleType, setVehicleType] = useState("All");
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [startPayment, setStartPayment] = useState(false);
   const [vehicleRental, setVehicleRental] = useState(null);
 
   console.log('Rendering the customerDashboard component')
@@ -93,18 +92,6 @@ function CustomerDashboard() {
   }, []);
 
 
-  const handleRentalConfirmation = async (vehicleId) => {
-    console.log(`Renting vehicle with ID: ${vehicleId}`);
-    const response = await api.post("vehicles/rent_vehicle/", {
-      "id": vehicleId
-    });
-    console.log(response.data);
-    setVehicleRental(response.data);
-    navigate("/rentals")
-  };
-  
-
-
   return (
     <div>
       <h2>Customer Dashboard</h2>
@@ -124,7 +111,7 @@ function CustomerDashboard() {
           <StationsMap stations={stations} />
 
           <VehicleTable vehicles={filteredVehicles} setSelectedVehicle={setSelectedVehicle} />
-          <RentalModal selectedVehicle={selectedVehicle} setSelectedVehicle={setSelectedVehicle} handleRentalConfirmation={handleRentalConfirmation} />
+          <RentalModal selectedVehicle={selectedVehicle} setSelectedVehicle={setSelectedVehicle}/>
           {/* <RideDetails vehicleRental={vehicleRental} setVehicleRental={setVehicleRental} /> */}
         </>
       ) : (
