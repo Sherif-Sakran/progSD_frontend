@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import axios from "axios";
-import StationDropdown from "./StationDropdown";
-import VehicleFilter from "./VehicleTypeDropdown";
-import VehicleTable from "./VehicleTable"
-import StationsMap from "./StationsMap"
-import RentalModal from "./RentalModal"
-import RideDetails from "./RideDetails"
+import StationDropdown from "../components/StationDropdown";
+import VehicleFilter from "../components/VehicleTypeDropdown";
+import VehicleTable from "../components/VehicleTable"
+import StationsMap from "../components/StationsMap"
+import RentalModal from "../components/RentalModal"
+import RideDetails from "./CustomerRentals"
 import {useNavigate} from "react-router-dom";
 
 function CustomerDashboard() {
@@ -16,6 +16,7 @@ function CustomerDashboard() {
   const [selectedStation, setSelectedStation] = useState(null);
   const [vehicleType, setVehicleType] = useState("All");
   const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [startPayment, setStartPayment] = useState(false);
   const [vehicleRental, setVehicleRental] = useState(null);
 
   console.log('Rendering the customerDashboard component')

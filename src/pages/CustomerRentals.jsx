@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/api"; // Axios instance
-import StationDropdown from "./StationDropdown";
+import StationDropdown from "../components/StationDropdown";
 import { useNavigate } from "react-router-dom";
 
 const RideDetails = () => {

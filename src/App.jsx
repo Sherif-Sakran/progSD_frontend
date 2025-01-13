@@ -3,7 +3,7 @@ import LoginForm from "./components/LoginForm";
 import LogoutButton from "./components/LogoutButton";
 import './App.css'
 import GeneralDashboard from './components/GeneralDashboard'
-import CustomerDashboard from './components/CustomerDashboard'
+import CustomerDashboard from './pages/CustomerDashboard'
 import OperatorDashboard from './components/OperatorDashboard'
 import ManagerDashboard from './components/ManagerDashboard'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'

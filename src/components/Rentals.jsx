@@ -1,5 +1,5 @@
 import React from 'react'
-import RideDetails from "./RideDetails"
+import RideDetails from "../pages/CustomerRentals"
 
 const Rentals = () => {
   console.log("inside Rentals")
