@@ -1,11 +1,13 @@
 import React from 'react'
+import api from '../services/api';
+import {useNavigate} from 'react-router-dom';
 
-const RentalModal = ({selectedVehicle, setSelectedVehicle}) => {
+const RentalModal = ({selectedVehicle, setSelectedVehicle, setVehicleRental}) => {
+  const navigate = useNavigate();
   const handleCloseModal = () => {
     console.log("closing ther modal");
     setSelectedVehicle(null);
   }
-  
   const handleRentalConfirmation = async (vehicleId) => {
     console.log(`Renting vehicle with ID: ${vehicleId}`);
     const response = await api.post("vehicles/rent_vehicle/", {

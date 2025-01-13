@@ -111,7 +111,7 @@ function CustomerDashboard() {
           <StationsMap stations={stations} />
 
           <VehicleTable vehicles={filteredVehicles} setSelectedVehicle={setSelectedVehicle} />
-          <RentalModal selectedVehicle={selectedVehicle} setSelectedVehicle={setSelectedVehicle}/>
+          <RentalModal selectedVehicle={selectedVehicle} setSelectedVehicle={setSelectedVehicle} setVehicleRental={setVehicleRental}/>
           {/* <RideDetails vehicleRental={vehicleRental} setVehicleRental={setVehicleRental} /> */}
         </>
       ) : (
