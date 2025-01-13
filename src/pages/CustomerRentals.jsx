@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../services/api"; // Axios instance
 import StationDropdown from "../components/StationDropdown";
 import { useNavigate } from "react-router-dom";
+import PaymentModal from '../components/PaymentModal';
 
 const RideDetails = () => {
   const [rentals, setRentals] = useState(null);
@@ -11,7 +12,7 @@ const RideDetails = () => {
   const [destinationStations, setDestinationStations] = useState(null);
   const [selectedDestinationStation, setSelectedDestinationStation] = useState(null);
   const [startPayment, setStartPayment] = useState(false);
-  
+  const [rentalCost, setRentalCost] = useState(false);
 
   const navigate = useNavigate();
 
@@ -77,15 +78,15 @@ const RideDetails = () => {
     }
     console.log("request body: ", requestBody);
     try {
-      setLoading(true);
       const response = await api.post('vehicles/return_vehicle/', requestBody);
       console.log(response.data);
-      navigate('/home');
+      setStartPayment(true);
+      console.log('cost: ', response.data.rental_record.total_cost);
+      setRentalCost(response.data.rental_record.total_cost);
+      // navigate('/home');
       //   onEndRide(response.data); // Notify parent about ride completion
     } catch (error) {
         console.error("Error ending ride:", error);
-    }finally{
-    setLoading(false);
     }
   };
 
@@ -151,9 +152,11 @@ const RideDetails = () => {
     
       <button onClick={()=>handleEndRide(currentRentals[0].vehicle_id)}>End Ride</button>
       <button onClick={()=>handleReportDefect(currentRentals[0].vehicle_id)}>Report Defect</button>
-
-
+      <PaymentModal amount={rentalCost} startPayment={startPayment} setStartPayment={setStartPayment}/>
     </div>}
+
+
+
     { prevRentals &&
     <div>
       <h2>Rentals History</h2>
