@@ -11,6 +11,7 @@ import ProtectedRoute from './utils/ProtectedRoute'
 import NotAuthorised from "./components/NotAuthorised";
 import Navbar from "./components/Navbar";
 import Rentals from "./components/Rentals";
+import { StationsProvider } from './context/StationsContext'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <>
+    <StationsProvider>
     <Router>
       {/* Conditionally render Navbar */}
       {/* {ShouldShowNavbar() && <Navbar />} */}
@@ -47,7 +49,7 @@ function App() {
           <OperatorDashboard />
           </ProtectedRoute>
           } />
-        
+
         <Route path="/manager" element={
           <ProtectedRoute role="manager">
           <ManagerDashboard />
@@ -57,6 +59,7 @@ function App() {
         {/* <Route path="/logout" element={<LogoutButton />} /> */}
       </Routes>
     </Router>
+    </StationsProvider>
     </>
   )
 }

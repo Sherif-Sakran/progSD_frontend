@@ -3,16 +3,19 @@ import api from "../services/api"; // Axios instance
 import StationDropdown from "../components/StationDropdown";
 import { useNavigate } from "react-router-dom";
 import PaymentModal from '../components/PaymentModal';
+import { useContext } from "react";
+import { StationsContext } from "../context/StationsContext";
 
 const RideDetails = () => {
   const [rentals, setRentals] = useState(null);
   const [loading, setLoading] = useState(true);
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [destinationStations, setDestinationStations] = useState(null);
   const [selectedDestinationStation, setSelectedDestinationStation] = useState(null);
   const [startPayment, setStartPayment] = useState(false);
   const [rentalCost, setRentalCost] = useState(false);
+  
+  const {stations, setStations} = useContext(StationsContext);
 
   const navigate = useNavigate();
 
@@ -26,23 +29,6 @@ const RideDetails = () => {
     setLoading(false);
     console.log("rentals: ", rentals)
   }, []);
-
-
-    // Fetch stations on load
-    useEffect(() => {
-    const fetchDestinationStations = async () => {
-        try {
-        const response = await api.get("vehicles/list_locations/");
-        setDestinationStations(response.data);
-        console.log(response.data);
-        } catch (error) {
-        console.error("Failed to fetch stations", error);
-        }
-    };
-
-    fetchDestinationStations();
-    }, []);
-
 
     // Use useEffect to trigger when selectedDestinationStation changes
     useEffect(() => {
@@ -144,7 +130,7 @@ const RideDetails = () => {
       <div>
         <label htmlFor="destination">Select Destination Station:</label>
         <StationDropdown
-          stations={destinationStations}
+          stations={stations}
           selectedStation={selectedDestinationStation}
           setSelectedStation={setSelectedDestinationStation}
           />

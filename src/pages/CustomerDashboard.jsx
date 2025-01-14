@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import api from "../services/api";
 import axios from "axios";
 import StationDropdown from "../components/StationDropdown";
@@ -8,15 +8,17 @@ import StationsMap from "../components/StationsMap"
 import RentalModal from "../components/RentalModal"
 import RideDetails from "./CustomerRentals"
 import {useNavigate} from "react-router-dom";
+import { StationsContext } from "../context/StationsContext";
 
 function CustomerDashboard() {
   const [userDetails, setUserDetails] = useState(null);
   const [vehicles, setVehicles] = useState(null);
-  const [stations, setStations] = useState(null);
   const [selectedStation, setSelectedStation] = useState(null);
   const [vehicleType, setVehicleType] = useState("All");
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [vehicleRental, setVehicleRental] = useState(null);
+
+  const { stations, setStations } = useContext(StationsContext);
 
   console.log('Rendering the customerDashboard component')
   const navigate = useNavigate();
@@ -36,23 +38,6 @@ function CustomerDashboard() {
   useEffect(()=> {
     console.log("type changed to: ", vehicleType);
   }, [vehicleType])
-
-
-  // Fetch stations on load
-  useEffect(() => {
-    const fetchStations = async () => {
-      try {
-        const response = await api.get("vehicles/list_locations/");
-        setStations(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Failed to fetch stations", error);
-      }
-    };
-
-    fetchStations();
-  }, []);
-
 
 
   // Fetch vehicles for the selected station
