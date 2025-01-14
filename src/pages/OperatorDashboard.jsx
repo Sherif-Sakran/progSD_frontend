@@ -5,7 +5,8 @@ import axios from "axios";
 
 function Dashboard() {
   const [data, setData] = useState(null);
-
+  const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -13,16 +14,18 @@ function Dashboard() {
         const response = await api.get("users/user_data/");
         setData(response.data);
         console.log('data: ', response.data)
-        console.log('data2: ', data)
       } catch (error) {
         console.error("Failed to fetch user data", error);
+      }finally{
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
 
   return (
-    <div>
+    <>
+    { !loading && <div>
       <h2>Operator Dashboard</h2>
       {data ? (
         <>
@@ -32,7 +35,8 @@ function Dashboard() {
       ) : (
         <p>...</p>
       )}
-    </div>
+    </div>}
+    </>
   );
 }
 

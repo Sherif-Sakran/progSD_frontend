@@ -4,7 +4,7 @@ import LogoutButton from "./components/LogoutButton";
 import './App.css'
 import GeneralDashboard from './components/GeneralDashboard'
 import CustomerDashboard from './pages/CustomerDashboard'
-import OperatorDashboard from './components/OperatorDashboard'
+import OperatorDashboard from './pages/OperatorDashboard'
 import ManagerDashboard from './components/ManagerDashboard'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import ProtectedRoute from './utils/ProtectedRoute'
