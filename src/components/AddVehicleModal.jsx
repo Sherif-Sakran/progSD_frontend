@@ -16,7 +16,7 @@ const AddVehicleModal = ({addVehicleModal, setAddVehicleModal}) => {
   console.log('inside Vehicle Modal')
   const [vehicleObject, setVehicleObject] = useState({
     type: 'Electric Car',
-    location_id: null,
+    location_id: "",
     battery_level: 100,
     status: 'Available',
     last_maintenance_date: "",
@@ -25,7 +25,18 @@ const AddVehicleModal = ({addVehicleModal, setAddVehicleModal}) => {
 
   
   const handleCloseModal = () => {
-    console.log("closing ther modal");
+    console.log("closing the modal");
+    setVehicleObject({
+        type: '',
+        location_id: "",
+        battery_level: 100,
+        status: 'Available',
+        last_maintenance_date: "",
+        is_defective: 0
+      });
+    setSelectedType("");
+    setSelectedStation("");
+    setMessage("");
     setAddVehicleModal(false);
   }
 
@@ -41,7 +52,7 @@ const AddVehicleModal = ({addVehicleModal, setAddVehicleModal}) => {
     setLoading(false);
     try{
     const responseBody = {
-        type: vehicleObject.type,
+        type: selectedType,
         battery_level: vehicleObject.battery_level,
         status: vehicleObject.status,
         location_id: selectedStation,
@@ -52,7 +63,7 @@ const AddVehicleModal = ({addVehicleModal, setAddVehicleModal}) => {
     const response = await api.post("vehicles/add_vehicle/", responseBody);
     console.log(response.data);
     setMessage(response.message || "Vehicle added successfully.");
-    setAddVehicleModal(false);
+    handleCloseModal();
     }catch(error){
         if (error.response && error.response.data)
             setMessage(error.response.data.message || "Process failed.");
