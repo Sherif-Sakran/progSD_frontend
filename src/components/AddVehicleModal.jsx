@@ -7,16 +7,19 @@ const AddVehicleModal = ({addVehicleModal, setAddVehicleModal}) => {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState(null);
+  const [selectedStation, setSelectedStation] = useState(null);
   const {stations} = useContext(StationsContext);
 
   const types = ['Electric Car', 'Electric Scooter', 'Electric Bike']
+  const statusOptions = ['Available', 'Rented']
+
   console.log('inside Vehicle Modal')
   const [vehicleObject, setVehicleObject] = useState({
     type: 'Electric Car',
+    location_id: null,
     battery_level: 100,
-    status: 'available',
-    location_id: 2,
-    last_maintenance_date: '',
+    status: 'Available',
+    last_maintenance_date: "",
     is_defective: 0
   });
 
@@ -35,25 +38,24 @@ const AddVehicleModal = ({addVehicleModal, setAddVehicleModal}) => {
   };
   
   const handleAddVehicle = async (vehicleObject) => {
-    console.log(`Processing payment: ${amount}`);
     setLoading(false);
     try{
     const responseBody = {
-        type: 'Electric Car',
-        battery_level: 100,
-        status: 'available',
-        location_id: 2,
-        last_maintenance_date: '',
-        is_defective: 0
+        type: vehicleObject.type,
+        battery_level: vehicleObject.battery_level,
+        status: vehicleObject.status,
+        location_id: selectedStation,
+        last_maintenance_date: vehicleObject.last_maintenance_date,
+        is_defective: vehicleObject.is_defective
     }
+    console.log(responseBody)
     const response = await api.post("vehicles/add_vehicle/", responseBody);
     console.log(response.data);
-    setMessage(response.message || "Payment Successful.");
+    setMessage(response.message || "Vehicle added successfully.");
     setAddVehicleModal(false);
-    setTimeout(()=>{navigate("/home");}, 1000)
     }catch(error){
         if (error.response && error.response.data)
-            setMessage(error.response.data.message || "Payment failed.");
+            setMessage(error.response.data.message || "Process failed.");
     }
   };
 
@@ -67,25 +69,30 @@ const AddVehicleModal = ({addVehicleModal, setAddVehicleModal}) => {
 
         <div>
             
-            {/* { types.map((type) =>  <label><input type="radio" name="type" value={type} checked={vehicleObject.type === type} onChange={handleChange}/>{type}</label> )} */}
             <label>Select Type: </label>
             <select
                 value={selectedType || ""}
                 onChange={(e) => setSelectedType(e.target.value)}
-            >
+                >
             <option name="type" value="">Select Type</option>
-            { types.map((type) =>  <option name="type" value={type}>{type}</option> )}
+            { types.map((type, typeIndex) =>  <option name="type" key={typeIndex} value={type}>{type}</option> )}
             </select>
-            <StationDropdown stations={stations} selectedType={selectedType} setSelectedType={setSelectedType}/>
+            <StationDropdown stations={stations} selectedStation={selectedStation} setSelectedStation={setSelectedStation}/>
+
         </div>
 
 
-        {/* <div>
+        <div>
         <label>Battery Level:
-            <input type="text" name="card_number" value={vehicleObject.card_number} onChange={handleChange} required/>
+            <input type="text" name="battery_level" value={vehicleObject.battery_level} onChange={handleChange} required/>
         </label>
         </div>
+
+        { statusOptions.map((status, statusIndex) =>  <label><input type="radio" key={statusIndex} name="status" value={status} checked={vehicleObject.status === status} onChange={handleChange}/>{status}</label> )}
+        
+        {/* 
         <div>
+
         <label>Card Passcode:
             <input type="text" name="card_passcode" value={vehicleObject.card_passcode} onChange={handleChange} required/>
         </label>

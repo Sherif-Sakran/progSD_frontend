@@ -15,7 +15,7 @@ const RideDetails = () => {
   const [startPayment, setStartPayment] = useState(false);
   const [rentalCost, setRentalCost] = useState(false);
   
-  const {stations, setStations} = useContext(StationsContext);
+  const {stations} = useContext(StationsContext);
 
   const navigate = useNavigate();
 
